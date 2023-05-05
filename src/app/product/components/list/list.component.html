@@ -23,6 +23,7 @@
       <td>
         <button class="btn btn-primary" title="Editar" (click)="showEditForm(p)">Editar</button>
         <button class="btn btn-danger" title="eliminar" (click)="delete(i)">Eliminar</button>
+        <button class="btn btn-info" title="eliminar" (click)="sell(i)">Vender</button>
       </td>
     </tr>
   </tbody>
@@ -33,23 +34,71 @@
   <div class="form-group">
     <label for="formGroupExampleInput">Nombre</label>
     <input type="text" class="form-control" [(ngModel)]="productM.product_name" id="formGroupExampleInput" name="product_name">
+    <span class="text-muted" *ngIf="(errors.product_name?.length??0) > 0">
+      <p *ngFor="let e of errors.product_name">
+        {{e}}
+      </p>
+    </span>
   </div>
   <div class="form-group">
     <label for="formGroupExampleInput2">Referencia</label>
     <input type="text" class="form-control" [(ngModel)]="productM.reference" id="formGroupExampleInput2" name="reference">
+    <span class="text-muted" *ngIf="(errors.reference?.length??0) > 0">
+      <p *ngFor="let e of errors.reference">
+        {{e}}
+      </p>
+    </span>
   </div>
   <div class="form-group">
     <label for="formGroupExampleInput3">Precio</label>
     <input type="text" class="form-control" [(ngModel)]="productM.price" id="formGroupExampleInput3" name="price">
+    <span class="text-muted" *ngIf="(errors.price?.length??0) > 0">
+      <p *ngFor="let e of errors.price">
+        {{e}}
+      </p>
+    </span>
   </div>
   <div class="form-group">
     <label for="formGroupExampleInput4">Peso</label>
     <input type="text" class="form-control" [(ngModel)]="productM.weight" id="formGroupExampleInput4" name="weight">
+    <span class="text-muted" *ngIf="(errors.weight?.length??0) > 0">
+      <p *ngFor="let e of errors.weight">
+        {{e}}
+      </p>
+    </span>
   </div>
   <div class="form-group">
     <label for="formGroupExampleInput5">Stock</label>
     <input type="text" class="form-control" [(ngModel)]="productM.stock" id="formGroupExampleInput5" name="stock">
+    <span class="text-muted" *ngIf="(errors.stock?.length??0) > 0">
+      <p *ngFor="let e of errors.stock">
+        {{e}}
+      </p>
+    </span>
   </div>
   <button type="submit" class="btn btn-primary">Guardar</button>
   <button class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+</form>
+
+
+<form *ngIf="showSellForm" (ngSubmit)="saveSell()">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Producto</label>
+    <input type="text" class="form-control" disabled [value]="sellForm.product?.product_name" id="formGroupExampleInput" name="product_name">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Cantidad</label>
+    <input type="text" class="form-control" [(ngModel)]="sellForm.amount" id="formGroupExampleInput2" name="reference">
+    <span class="text-muted" *ngIf="(sellErrors.amount?.length??0) > 0">
+      <p *ngFor="let e of sellErrors.amount">
+        {{e}}
+      </p>
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Total</label>
+    <input type="text" class="form-control" disabled [value]="(sellForm.product?.price??0) * (sellForm.amount ?? 0)" id="formGroupExampleInput" name="product_name">
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <button class="btn btn-secondary" (click)="cancelSell()">Cancelar</button>
 </form>

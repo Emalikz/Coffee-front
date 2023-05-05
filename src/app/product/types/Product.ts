@@ -15,3 +15,6 @@ export class Product {
     this.sells = [];
   }
 }
+
+
+export type ProductErrors = {[Key in keyof Product]: Array<string>};

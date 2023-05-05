@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { environment } from 'src/environments/environment.development';
 import { StorageService } from 'src/app/services/storage.service';
+import { Sell } from '../types/Sell';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,13 @@ export class ProductService {
     return this._http.delete(`${environment.api_url}/products/${id}`,{
       headers: new HttpHeaders({'Authorization': `Bearer ${this._storage.get("token")}`})
     });
+  }
+
+
+  sell(data: Sell){
+    return this._http.post(`${environment.api_url}/sell`,data,{
+      headers: new HttpHeaders({'Authorization': `Bearer ${this._storage.get("token")}`})
+    })
   }
 
 

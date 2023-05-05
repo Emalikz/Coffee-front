@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { OnInit } from '@angular/core'
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../types/Product';
+import { Product, ProductErrors } from '../../types/Product';
 import Swal from 'sweetalert2';
+import { Sell, SellErrors } from '../../types/Sell';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -12,6 +13,22 @@ import Swal from 'sweetalert2';
 export class ListComponent implements OnInit {
   constructor(private _product:ProductService){
 
+  }
+
+  private _sellErrors: Partial<SellErrors> = {};
+  public get sellErrors(): Partial<SellErrors> {
+    return this._sellErrors;
+  }
+  public set sellErrors(value: Partial<SellErrors>) {
+    this._sellErrors = value;
+  }
+  private _errors: Partial<ProductErrors> = {};
+
+  public get errors(): Partial<ProductErrors> {
+    return this._errors;
+  }
+  public set errors(value: Partial<ProductErrors>) {
+    this._errors = value;
   }
 
   private _showForm: boolean = false;
@@ -29,17 +46,33 @@ export class ListComponent implements OnInit {
   public set productM(value: Product) {
     this._productM = value;
   }
-  private _products: Product[] = [];
-  public get products(): Product[] {
+  private _products: Required<Product>[] = [];
+  public get products(): Required<Product>[] {
     return this._products;
   }
-  public set products(value: Product[]) {
+  public set products(value: Required<Product>[]) {
     this._products = value;
+  }
+
+  private _sellForm: Sell = new Sell();
+  public get sellForm(): Sell {
+    return this._sellForm;
+  }
+  public set sellForm(value: Sell) {
+    this._sellForm = value;
+  }
+
+  private _showSellForm: boolean = false;
+  public get showSellForm(): boolean {
+    return this._showSellForm;
+  }
+  public set showSellForm(value: boolean) {
+    this._showSellForm = value;
   }
 
   loadProducts(){
     this._product.getAll().subscribe(prod => {
-      this._products  = prod;
+      this._products  = prod as Required<Product>[];
     })
   }
 
@@ -65,8 +98,11 @@ export class ListComponent implements OnInit {
       if(this.productM?.id == null){
         this._productM = new Product();
         this.showForm = false;
+        this.errors = {};
         this.loadProducts();
       }
+    },({error})=>{
+      this.errors = error.errors;
     });
   }
 
@@ -92,6 +128,36 @@ export class ListComponent implements OnInit {
 
   cancel(){
     this.productM = new Product();
+    this.errors = {};
     this.showForm = false;
+  }
+
+
+  sell(i:number){
+    this.showSellForm = true;
+    const product = this._products.at(i) as Product;
+    this.sellForm = new Sell();
+    this.sellForm.product = product;
+    this.sellForm.product_id = product.id;
+  }
+
+  saveSell(){
+    this._product.sell(this.sellForm).subscribe(succ=>{
+      Swal.fire("Éxito","Se guardó correctamente",'success');
+      const product  =this.products.findIndex(product=>product.id == this.sellForm.product_id);
+      this.products.at(product)?.sells?.push(this.sellForm);
+      this.products[product].stock -= this.sellForm?.amount ?? 0;
+      this.sellForm = new Sell();
+      this.showSellForm = false;
+      this.sellErrors = {};
+    },({error})=>{
+      this.sellErrors = error.errors;
+    })
+  }
+
+  cancelSell(){
+    this.sellErrors = {};
+    this.sellForm = new Sell();
+    this.showSellForm = false;
   }
 }
