@@ -1,3 +1,5 @@
+<h5>El producto más vendido: {{mostSold.product_name}}</h5>
+<h5>El producto con más stock es: {{higherStock.product_name}}</h5>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -19,7 +21,7 @@
       <td>{{p.price}}</td>
       <td>{{p.weight}}</td>
       <td>{{p.stock}}</td>
-      <td>{{p.sells?.length}}</td>
+      <td>{{p.sells.length}}</td>
       <td>
         <button class="btn btn-primary" title="Editar" (click)="showEditForm(p)">Editar</button>
         <button class="btn btn-danger" title="eliminar" (click)="delete(i)">Eliminar</button>

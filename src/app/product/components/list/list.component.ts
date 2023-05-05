@@ -70,15 +70,42 @@ export class ListComponent implements OnInit {
     this._showSellForm = value;
   }
 
+  private _mostSold: Product = new Product();
+  public get mostSold(): Product {
+    return this._mostSold;
+  }
+  public set mostSold(value: Product) {
+    this._mostSold = value;
+  }
+
+  private _higherStock: Product = new Product();
+  public get higherStock(): Product {
+    return this._higherStock;
+  }
+  public set higherStock(value: Product) {
+    this._higherStock = value;
+  }
+
+
   loadProducts(){
     this._product.getAll().subscribe(prod => {
       this._products  = prod as Required<Product>[];
+      this.loadAnalytics();
+    })
+  }
+
+  loadAnalytics(){
+    this._product.higher_stock().subscribe(p=>{
+      this.higherStock = p;
+    });
+    this._product.most_sold().subscribe(p=>{
+      this.mostSold = p;
     })
   }
 
   ngOnInit(): void {
 
-    this.loadProducts()
+    this.loadProducts();
   }
   showEditForm(p:Product){
     this.showForm = true;

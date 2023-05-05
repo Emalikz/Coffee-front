@@ -51,5 +51,16 @@ export class ProductService {
     })
   }
 
+  higher_stock(){
+    return this._http.get<Product>(`${environment.api_url}/analytics/higher_stock`,{
+      headers: new HttpHeaders({'Authorization': `Bearer ${this._storage.get("token")}`})
+    });
+  }
+
+  most_sold(){
+    return this._http.get<Product>(`${environment.api_url}/analytics/most_sold`,{
+      headers: new HttpHeaders({'Authorization': `Bearer ${this._storage.get("token")}`})
+    });
+  }
 
 }
