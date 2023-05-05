@@ -1,1 +1,20 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light" *ngIf="!isLogin">
+  <a class="navbar-brand" href="#">My Store</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/products/list">Products</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Close Session</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 <router-outlet></router-outlet>

@@ -1,1 +1,55 @@
-<p>list works!</p>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Referencia</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Peso</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Número de ventas</th>
+      <th scope="col">Opts <button class="btn btn-success" (click)="create()">Crear</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of products; let i=index">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{p.product_name}}</td>
+      <td>{{p.reference}}</td>
+      <td>{{p.price}}</td>
+      <td>{{p.weight}}</td>
+      <td>{{p.stock}}</td>
+      <td>{{p.sells?.length}}</td>
+      <td>
+        <button class="btn btn-primary" title="Editar" (click)="showEditForm(p)">Editar</button>
+        <button class="btn btn-danger" title="eliminar" (click)="delete(i)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<form *ngIf="showForm" (ngSubmit)="save()">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Nombre</label>
+    <input type="text" class="form-control" [(ngModel)]="productM.product_name" id="formGroupExampleInput" name="product_name">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Referencia</label>
+    <input type="text" class="form-control" [(ngModel)]="productM.reference" id="formGroupExampleInput2" name="reference">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput3">Precio</label>
+    <input type="text" class="form-control" [(ngModel)]="productM.price" id="formGroupExampleInput3" name="price">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput4">Peso</label>
+    <input type="text" class="form-control" [(ngModel)]="productM.weight" id="formGroupExampleInput4" name="weight">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput5">Stock</label>
+    <input type="text" class="form-control" [(ngModel)]="productM.stock" id="formGroupExampleInput5" name="stock">
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <button class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+</form>
